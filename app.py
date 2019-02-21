@@ -58,8 +58,9 @@ def user_profile(user_id):
     first_name = user.first_name
     last_name = user.last_name
     image_url = user.image_url
+    posts = user.posts
 
-    return render_template('user_detail.html', first_name=first_name, last_name=last_name, image_url=image_url, user_id=user_id)
+    return render_template('user_detail.html', posts=posts, first_name=first_name, last_name=last_name, image_url=image_url, user_id=user_id)
 
 @app.route('/users/<user_id>/edit')
 def show_edit_user_profile(user_id):
@@ -97,3 +98,27 @@ def delete_user_profile(user_id):
     db.session.commit()
 
     return redirect('/users')
+
+@app.route('/users/<user_id>/posts/new')
+def show_new_post_form(user_id):
+    """Shows a new post for the user"""
+
+    user = User.query.get(user_id)
+    first_name = user.first_name
+    last_name = user.last_name
+
+    return render_template('new_post_form.html', first_name=first_name, last_name=last_name, user_id=user_id)
+
+@app.route('/users/<user_id>/posts', methods=["POST"])
+def create_new_post(user_id):
+    """Creates a new post for the user"""
+
+    title = request.form.get('title')
+    content = request.form.get('content')
+
+    post = Post(title=title, content=content, user_id=user_id)
+
+    db.session.add(post)
+    db.session.commit()
+
+    return redirect(f"/users/{user_id}")

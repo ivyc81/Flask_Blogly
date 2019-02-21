@@ -21,10 +21,13 @@
             <button class="btn btn-danger" type="submit">Delete</button>
         </form>
         <div>
+            
            <ul class="p-0"><h4>My posts</h4>
+            {% for post in posts %}
+            <li><a href="/posts/{{post.id}}">{{post.title}}</a></li>
+            {% endfor %}
            </ul>
-           <form action="">
-
+           <form action="/users/{{user_id}}/posts/new">
                <button class="btn btn-primary">Add Post</button>
            </form>
         </div>
