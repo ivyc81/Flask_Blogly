@@ -1,6 +1,6 @@
 """Blogly application."""
 
-from flask import Flask, request, render_template, redirect
+from flask import Flask, request, render_template, redirect, flash
 from models import db, connect_db, User, Post
 from flask_debugtoolbar import DebugToolbarExtension
 
@@ -18,7 +18,7 @@ connect_db(app)
 def show_table():
     """show a list of users on screen"""
 
-    posts = Post.query.order_by(Post.created_at.desc())
+    posts = Post.query.order_by(Post.created_at.desc()).limit(5)
 
     return render_template('homepage.html', posts=posts)
 
@@ -49,6 +49,7 @@ def create_new_users():
     db.session.add(user)
     db.session.commit()
 
+    flash('You successfully created a new user!')
     return redirect('/users')
 
 @app.route('/users/<user_id>')
@@ -93,6 +94,7 @@ def edit_user_profile(user_id):
     db.session.add(user)
     db.session.commit()
 
+    flash('You successfully edited a user!')
     return redirect('/users')
 
 @app.route('/users/<user_id>/delete', methods=["POST"])
@@ -103,6 +105,7 @@ def delete_user_profile(user_id):
     db.session.delete(user)
     db.session.commit()
 
+    flash('You successfully deleted a user!')
     return redirect('/users')
 
 @app.route('/users/<user_id>/posts/new')
@@ -127,6 +130,7 @@ def create_new_post(user_id):
     db.session.add(post)
     db.session.commit()
 
+    flash('You successfully created a new post!')
     return redirect(f"/users/{user_id}")
 
 @app.route('/posts/<post_id>')
@@ -164,6 +168,7 @@ def edit_post(post_id):
     # db.session.add(post)
     db.session.commit()
 
+    flash('You successfully edited a post!')
     return redirect(f'/posts/{post_id}')
 
 
@@ -177,5 +182,13 @@ def delete_post(post_id):
     db.session.delete(post)
     db.session.commit()
 
+    flash('You successfully deleted a post!')
     return redirect(f'/users/{user_id}')
 
+@app.route('/posts')
+def show_posts():
+    """show all posts"""
+
+    posts = Post.query.order_by(Post.created_at.desc())
+
+    return render_template('post_listing.html', posts=posts)

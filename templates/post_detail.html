@@ -1,6 +1,11 @@
 {% extends "base.html" %}
 
 {% block title %}
+{% with messages = get_flashed_messages() %}
+    {% for message in messages %}
+    <div class="alert alert-success" role="alert">{{message}}</div>
+    {% endfor %}
+{% endwith %}
 <div class="m-2">
     <h1>{{title}}</h1>
 </div>
@@ -13,7 +18,7 @@
     </div>
     
     <div>
-        By {{first_name}} {{last_name}}
+        By <a href="/users/{{user_id}}">{{first_name}} {{last_name}}</a>
     </div>
 
     <form action="/users/{{user_id}}">

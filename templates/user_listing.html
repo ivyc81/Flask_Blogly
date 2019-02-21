@@ -1,6 +1,12 @@
 {% extends "base.html" %}
 
+
 {% block title %}
+{% with messages = get_flashed_messages() %}
+    {% for message in messages %}
+    <div class="alert alert-success" role="alert">{{message}}</div>
+    {% endfor %}
+{% endwith %}
 <div class='m-2'>
     <h1>Users</h1>
 </div>
