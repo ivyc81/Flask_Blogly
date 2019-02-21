@@ -10,9 +10,9 @@
 <div class="m-2">
     <form action="/posts/{{post_id}}/edit" method="POST">
         <label for="title">Title</label>
-        <input type="text" name="title" id="title" value="{{title}}"><br>
+        <input type="text" name="title" id="title" value="{{title}}" required><br>
         <label for="content">Content</label>
-        <input type="text" name="content" id="content" value="{{content}}"><br>
+        <input type="text" name="content" id="content" value="{{content}}" required><br>
    
         <button class="btn btn-primary" type="submit">Edit</button>
     </form>

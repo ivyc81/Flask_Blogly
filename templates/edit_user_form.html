@@ -10,11 +10,11 @@
 <div class="m-2">
     <form action="/users/{{user_id}}/edit" method="POST">
         <label for="first-name">First Name:</label>
-        <input type="text" name="first_name" id="first-name" value="{{first_name}}"><br>
+        <input type="text" name="first_name" id="first-name" value="{{first_name}}" required><br>
         <label for="last-name">Last Name:</label>
-        <input type="text" name="last_name" id="last-name" value="{{last_name}}"><br>
+        <input type="text" name="last_name" id="last-name" value="{{last_name}}" required><br>
         <label for="image-url">Image URL:</label>
-        <input type="text" name="image_url" id="image-url" value="{{image_url}}"><br>
+        <input type="text" name="image_url" id="image-url" value="{{image_url}}" required><br>
         <button class="btn btn-primary" type="submit">Save</button>
     </form>
     <form action="/users/{{user_id}}">

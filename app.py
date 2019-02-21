@@ -18,14 +18,15 @@ connect_db(app)
 def show_table():
     """show a list of users on screen"""
 
-    return redirect('/users')
+    posts = Post.query.order_by(Post.created_at.desc())
+
+    return render_template('homepage.html', posts=posts)
 
 @app.route('/users')
 def show_user_list():
     """show a list of users on screen"""
 
     users = User.query.all()
-
 
     return render_template("user_listing.html", users=users)
 
@@ -44,7 +45,7 @@ def create_new_users():
     last_name = request.form['last_name']
     image_url = request.form['image_url'] or None
 
-    user = User(first_name = first_name, last_name = last_name, image_url = image_url)
+    user = User(first_name=first_name, last_name=last_name, image_url=image_url)
     db.session.add(user)
     db.session.commit()
 
