@@ -15,8 +15,8 @@ connect_db(app)
 # db.create_all()
 
 @app.route('/')
-def show_table():
-    """show a list of users on screen"""
+def show_five_posts():
+    """show a list 5 posts on screen"""
 
     posts = Post.query.order_by(Post.created_at.desc())
 
@@ -109,7 +109,7 @@ def delete_user_profile(user_id):
 
 @app.route('/users/<user_id>/posts/new')
 def show_new_post_form(user_id):
-    """Shows a new post for the user"""
+    """Shows a form for the user to create new post"""
 
     user = User.query.get(user_id)
     first_name = user.first_name
@@ -122,7 +122,7 @@ def show_new_post_form(user_id):
 
 @app.route('/users/<user_id>/posts', methods=["POST"])
 def create_new_post(user_id):
-    """Creates a new post for the user"""
+    """Creates a new post from the form"""
 
     title = request.form.get('title')
     content = request.form.get('content')
