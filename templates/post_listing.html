@@ -12,7 +12,7 @@
         {% for post in posts %}
         <h2><a href="/posts/{{post.id}}">{{post.title}}</a></h2>
         <div>{{post.content}}</div>
-        <small>by <a href="/users/{{post.user.id}}">{{post.user.first_name}} {{post.user.last_name}}</a> on {{post.created_at.strftime('%a %b %d, %Y %I:%m %p')}}</small>
+        <small>by <a href="/users/{{post.user.id}}">{{post.user.full_name}}</a> on {{post.created_at.strftime('%a %b %d, %Y %I:%m %p')}}</small>
         {% endfor %}
         </ul>
     </div>

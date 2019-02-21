@@ -25,6 +25,10 @@ class User(db.Model):
     last_name = db.Column(db.String(50), nullable=False)
     image_url = db.Column(db.String(), default=DEFAULT_IMAGE_URL)
 
+    @property
+    def full_name(self):
+        return f'{self.first_name} {self.last_name}'
+
 
 class Post(db.Model):
     """This is a class for Posts talbe"""

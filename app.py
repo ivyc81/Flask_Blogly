@@ -1,6 +1,6 @@
 """Blogly application."""
 
-from flask import Flask, request, render_template, redirect, flash
+from flask import Flask, request, render_template, redirect
 from models import db, connect_db, User, Post
 from flask_debugtoolbar import DebugToolbarExtension
 
@@ -18,7 +18,7 @@ connect_db(app)
 def show_table():
     """show a list of users on screen"""
 
-    posts = Post.query.order_by(Post.created_at.desc()).limit(5)
+    posts = Post.query.order_by(Post.created_at.desc())
 
     return render_template('homepage.html', posts=posts)
 
@@ -26,7 +26,7 @@ def show_table():
 def show_user_list():
     """show a list of users on screen"""
 
-    users = User.query.all()
+    users = User.query.order_by(User.first_name, User.last_name)
 
     return render_template("user_listing.html", users=users)
 
@@ -49,7 +49,6 @@ def create_new_users():
     db.session.add(user)
     db.session.commit()
 
-    flash('You successfully created a new user!')
     return redirect('/users')
 
 @app.route('/users/<user_id>')
@@ -57,15 +56,13 @@ def user_profile(user_id):
 
     user = User.query.get(user_id)
 
-    first_name = user.first_name
-    last_name = user.last_name
+    full_name = user.full_name
     image_url = user.image_url
     posts = user.posts
 
     return render_template('user_detail.html', 
                            posts=posts, 
-                           first_name=first_name, 
-                           last_name=last_name, 
+                           full_name=full_name,
                            image_url=image_url, 
                            user_id=user_id)
 
@@ -79,7 +76,11 @@ def show_edit_user_profile(user_id):
     last_name = user.last_name
     image_url = user.image_url
 
-    return render_template('edit_user_form.html', first_name=first_name, last_name=last_name, image_url=image_url, user_id=user_id)
+    return render_template('edit_user_form.html',
+                            first_name=first_name,
+                            last_name=last_name,
+                            image_url=image_url,
+                            user_id=user_id)
 
 @app.route('/users/<user_id>/edit', methods=["POST"])
 def edit_user_profile(user_id):
@@ -94,7 +95,6 @@ def edit_user_profile(user_id):
     db.session.add(user)
     db.session.commit()
 
-    flash('You successfully edited a user!')
     return redirect('/users')
 
 @app.route('/users/<user_id>/delete', methods=["POST"])
@@ -105,7 +105,6 @@ def delete_user_profile(user_id):
     db.session.delete(user)
     db.session.commit()
 
-    flash('You successfully deleted a user!')
     return redirect('/users')
 
 @app.route('/users/<user_id>/posts/new')
@@ -116,7 +115,10 @@ def show_new_post_form(user_id):
     first_name = user.first_name
     last_name = user.last_name
 
-    return render_template('new_post_form.html', first_name=first_name, last_name=last_name, user_id=user_id)
+    return render_template('new_post_form.html',
+                            first_name=first_name,
+                            last_name=last_name,
+                            user_id=user_id)
 
 @app.route('/users/<user_id>/posts', methods=["POST"])
 def create_new_post(user_id):
@@ -130,7 +132,6 @@ def create_new_post(user_id):
     db.session.add(post)
     db.session.commit()
 
-    flash('You successfully created a new post!')
     return redirect(f"/users/{user_id}")
 
 @app.route('/posts/<post_id>')
@@ -141,11 +142,15 @@ def show_post(post_id):
     title = post.title
     content = post.content
     user = post.user
-    first_name = user.first_name
-    last_name = user.last_name
+    full_name = user.full_name
     user_id = user.id
 
-    return render_template("post_detail.html", title=title, content=content, first_name=first_name, last_name=last_name, user_id=user_id, post_id=post_id)
+    return render_template("post_detail.html",
+                            title=title,
+                            content=content,
+                            full_name=full_name,
+                            user_id=user_id,
+                            post_id=post_id)
 
 @app.route('/posts/<post_id>/edit')
 def show_edit_post_form(post_id):
@@ -155,7 +160,10 @@ def show_edit_post_form(post_id):
     title = post.title
     content = post.content
 
-    return render_template('edit_post_form.html', title=title, content=content, post_id=post_id)
+    return render_template('edit_post_form.html',
+                            title=title,
+                            content=content,
+                            post_id=post_id)
 
 @app.route('/posts/<post_id>/edit', methods=["POST"])
 def edit_post(post_id):
@@ -168,7 +176,6 @@ def edit_post(post_id):
     # db.session.add(post)
     db.session.commit()
 
-    flash('You successfully edited a post!')
     return redirect(f'/posts/{post_id}')
 
 
@@ -182,7 +189,6 @@ def delete_post(post_id):
     db.session.delete(post)
     db.session.commit()
 
-    flash('You successfully deleted a post!')
     return redirect(f'/users/{user_id}')
 
 @app.route('/posts')
@@ -192,3 +198,4 @@ def show_posts():
     posts = Post.query.order_by(Post.created_at.desc())
 
     return render_template('post_listing.html', posts=posts)
+
