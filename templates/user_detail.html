@@ -1,17 +1,34 @@
 {% extends "base.html" %}
 
 {% block title %}
-<h1>{{first_name}} {{last_name}}</h1>
+<div class="m-2">
+    <h1>{{first_name}} {{last_name}}</h1>
+</div>
 {% endblock%}
 
 {% block content %}
-<img src="{{image_url}}" alt="">
+<div class="row m-2">
+    <div class="col-2">
+        <img class = "img-fluid" width = "150" src="{{image_url}}" alt="">
+    </div>
+    
+    <div class="col-4">
+        <form action="/users/{{user_id}}/edit">
+            <button class="btn btn-primary my-2" type="submit">Edit</button>
+        </form>
+        
+        <form action="/users/{{user_id}}/delete" method="POST">
+            <button class="btn btn-danger" type="submit">Delete</button>
+        </form>
+        <div>
+           <ul class="p-0"><h4>My posts</h4>
+           </ul>
+           <form action="">
 
-<form action="/users/{{user_id}}/edit">
-    <button type="submit">Edit</button>
-</form>
+               <button class="btn btn-primary">Add Post</button>
+           </form>
+        </div>
+    </div>
 
-<form action="/users/{{user_id}}/delete" method="POST">
-    <button type="submit">Delete</button>
-</form>
+</div>
 {% endblock %}

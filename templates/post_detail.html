@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}
+<div class="m-2">
+    <h1>{{title}}</h1>
+</div>
+{% endblock%}
+
+{% block content %}
+<div class="m-2">
+    <div>
+        {{content}}
+    </div>
+    
+    <div>
+        By {{first_name}} {{last_name}}
+    </div>
+
+    <form action="">
+        <button class="btn">Cancel</button>
+    </form>
+
+    <form action="">
+            <button class="btn btn-primary">Edit</button>
+    </form>
+
+    <form action="">
+        <button class="btn btn-danger">Delete</button>
+    </form>
+
+
+</div>
+{% endblock %}

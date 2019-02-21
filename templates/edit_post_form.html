@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}
+<div class='m-2'>
+    <h1>Add post for {{first_name}} {{last_name}}</h1>
+</div>
+{% endblock%}
+
+{% block content %}
+<div class="m-2">
+    <form action="/users" method="POST">
+        <label for="title">Title</label>
+        <input type="text" name="title" id="title"><br>
+        <label for="content">Content</label>
+        <input type="text" name="content" id="content"><br>
+   
+        <button class="btn btn-primary" type="submit">Edit</button>
+    </form>
+    <form action="">
+        <button class="btn btn-primaty">Cancel</button>
+    </form>
+</div>
+{% endblock %}

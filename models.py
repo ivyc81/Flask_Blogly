@@ -1,7 +1,10 @@
 """Models for Blogly."""
 
 from flask_sqlalchemy import SQLAlchemy
+import datetime
+from sqlalchemy.sql import func
 
+ts = datetime.datetime.now().timestamp()
 db = SQLAlchemy()
 
 def connect_db(app):
@@ -21,4 +24,15 @@ class User(db.Model):
     image_url = db.Column(db.String(), default="https://www.rithmschool.com/assets/team/whiskey-b19e7b9d17b43ac303323c552d46b3ddaf18d38ded9d10e4e1fa39f63c06622b.jpg")
 
 
-            
+class Post(db.Model):
+    """This is a class for Posts talbe"""
+
+    __tablename__ = "posts"
+
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    title = db.Column(db.String(150), nullable=False)
+    content = db.Column(db.Text, nullable=False)
+    created_at = db.Column(db.DateTime(timezone=True), server_default=func.now())
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
+
+    user = db.relationship("User", backref="posts")
