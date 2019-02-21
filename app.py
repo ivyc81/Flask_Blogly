@@ -12,7 +12,7 @@ app.config['SECRET_KEY'] = 'secret'
 
 debug = DebugToolbarExtension(app)
 connect_db(app)
-db.create_all()
+# db.create_all()
 
 @app.route('/')
 def show_table():
@@ -27,7 +27,7 @@ def show_user_list():
     users = User.query.all()
 
 
-    return render_template("user_listing.html", users = users)
+    return render_template("user_listing.html", users=users)
 
 @app.route('/users/new')
 def show_create_user_form():
@@ -60,7 +60,12 @@ def user_profile(user_id):
     image_url = user.image_url
     posts = user.posts
 
-    return render_template('user_detail.html', posts=posts, first_name=first_name, last_name=last_name, image_url=image_url, user_id=user_id)
+    return render_template('user_detail.html', 
+                           posts=posts, 
+                           first_name=first_name, 
+                           last_name=last_name, 
+                           image_url=image_url, 
+                           user_id=user_id)
 
 @app.route('/users/<user_id>/edit')
 def show_edit_user_profile(user_id):
@@ -122,3 +127,54 @@ def create_new_post(user_id):
     db.session.commit()
 
     return redirect(f"/users/{user_id}")
+
+@app.route('/posts/<post_id>')
+def show_post(post_id):
+    """show post"""
+
+    post = Post.query.get(post_id)
+    title = post.title
+    content = post.content
+    user = post.user
+    first_name = user.first_name
+    last_name = user.last_name
+    user_id = user.id
+
+    return render_template("post_detail.html", title=title, content=content, first_name=first_name, last_name=last_name, user_id=user_id, post_id=post_id)
+
+@app.route('/posts/<post_id>/edit')
+def show_edit_post_form(post_id):
+    """show a form for user to update post"""
+
+    post = Post.query.get(post_id)
+    title = post.title
+    content = post.content
+
+    return render_template('edit_post_form.html', title=title, content=content, post_id=post_id)
+
+@app.route('/posts/<post_id>/edit', methods=["POST"])
+def edit_post(post_id):
+    """update post"""
+
+    post = Post.query.get(post_id)
+    post.title = request.form.get('title')
+    post.content = request.form.get('content')
+
+    # db.session.add(post)
+    db.session.commit()
+
+    return redirect(f'/posts/{post_id}')
+
+
+@app.route('/posts/<post_id>/delete', methods=["POST"])
+def delete_post(post_id):
+    """delete post"""
+
+    post = Post.query.get(post_id)
+    user = post.user
+    user_id = user.id
+    db.session.delete(post)
+    db.session.commit()
+
+    return redirect(f'/users/{user_id}')
+

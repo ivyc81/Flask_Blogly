@@ -16,15 +16,15 @@
         By {{first_name}} {{last_name}}
     </div>
 
-    <form action="">
-        <button class="btn">Cancel</button>
+    <form action="/users/{{user_id}}">
+        <button class="btn btn-secondary">Cancel</button>
     </form>
 
-    <form action="">
+    <form action="/posts/{{post_id}}/edit">
             <button class="btn btn-primary">Edit</button>
     </form>
 
-    <form action="">
+    <form action="/posts/{{post_id}}/delete" method="POST">
         <button class="btn btn-danger">Delete</button>
     </form>
 
