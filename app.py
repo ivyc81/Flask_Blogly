@@ -61,11 +61,14 @@ def user_profile(user_id):
     image_url = user.image_url
     posts = user.posts
 
-    return render_template('user_detail.html', 
-                           posts=posts, 
-                           full_name=full_name,
-                           image_url=image_url, 
-                           user_id=user_id)
+    return render_template(
+        'user_detail.html',
+        posts=posts,
+        full_name=full_name,
+        image_url=image_url,
+        user_id=user_id
+    )
+
 
 @app.route('/users/<user_id>/edit')
 def show_edit_user_profile(user_id):
@@ -77,11 +80,13 @@ def show_edit_user_profile(user_id):
     last_name = user.last_name
     image_url = user.image_url
 
-    return render_template('edit_user_form.html',
-                            first_name=first_name,
-                            last_name=last_name,
-                            image_url=image_url,
-                            user_id=user_id)
+    return render_template(
+        'edit_user_form.html',
+        first_name=first_name,
+        last_name=last_name,
+        image_url=image_url,
+        user_id=user_id
+    )
 
 @app.route('/users/<user_id>/edit', methods=["POST"])
 def edit_user_profile(user_id):
@@ -118,11 +123,13 @@ def show_new_post_form(user_id):
     first_name = user.first_name
     last_name = user.last_name
     tags = Tag.query.all()
-    return render_template('new_post_form.html',
-                            first_name=first_name,
-                            last_name=last_name,
-                            user_id=user_id,
-                            tags=tags)
+    return render_template(
+        'new_post_form.html',
+        first_name=first_name,
+        last_name=last_name,
+        user_id=user_id,
+        tags=tags
+    )
 
 @app.route('/users/<user_id>/posts', methods=["POST"])
 def create_new_post(user_id):
@@ -156,14 +163,16 @@ def show_post(post_id):
     user_id = user.id
     tags = post.tags
 
-    return render_template("post_detail.html",
-                            title=title,
-                            content=content,
-                            full_name=full_name,
-                            user_id=user_id,
-                            post_id=post_id,
-                            tags=tags,
-                            post=post)
+    return render_template(
+        "post_detail.html",
+        title=title,
+        content=content,
+        full_name=full_name,
+        user_id=user_id,
+        post_id=post_id,
+        tags=tags,
+        post=post
+    )
 
 @app.route('/posts/<post_id>/edit')
 def show_edit_post_form(post_id):
@@ -175,12 +184,14 @@ def show_edit_post_form(post_id):
     tags_checked = post.tags
     tags_all = Tag.query.all()
 
-    return render_template('edit_post_form.html',
-                            title=title,
-                            content=content,
-                            post_id=post_id,
-                            tags=tags_all,
-                            tags_checked=tags_checked)
+    return render_template(
+        'edit_post_form.html',
+        title=title,
+        content=content,
+        post_id=post_id,
+        tags=tags_all,
+        tags_checked=tags_checked
+    )
 
 @app.route('/posts/<post_id>/edit', methods=["POST"])
 def edit_post(post_id):
@@ -243,7 +254,7 @@ def create_tag():
 
     name = request.form["name"]
     tag = Tag(name=name)
-    
+
     db.session.add(tag)
     db.session.commit()
 
@@ -258,7 +269,12 @@ def show_posts_in_tag(tag_id):
     tag_name = tag.name
     posts = tag.posts
 
-    return render_template("tag_detail.html", tag_name=tag_name, posts=posts, tag_id=tag_id)
+    return render_template(
+        "tag_detail.html",
+        tag_name=tag_name,
+        posts=posts,
+        tag_id=tag_id
+    )
 
 @app.route('/tags/<tag_id>/edit')
 def show_edit_tag_form(tag_id):
