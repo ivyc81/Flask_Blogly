@@ -13,6 +13,11 @@
         <input type="text" name="title" id="title" required><br>
         <label for="content">Content</label>
         <input type="text" name="content" id="content" required><br>
+
+        {% for tag in tags %}
+        <input type="checkbox" name={{tag.name}}>
+        <label for="{{tag.name}}">{{tag.name}}</label>
+        {% endfor %}
    
         <button class="btn btn-primary" type="submit">Add</button>
     </form>

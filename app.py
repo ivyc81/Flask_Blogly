@@ -114,11 +114,12 @@ def show_new_post_form(user_id):
     user = User.query.get(user_id)
     first_name = user.first_name
     last_name = user.last_name
-
+    tags = Tag.query.all()
     return render_template('new_post_form.html',
                             first_name=first_name,
                             last_name=last_name,
-                            user_id=user_id)
+                            user_id=user_id,
+                            tags=tags)
 
 @app.route('/users/<user_id>/posts', methods=["POST"])
 def create_new_post(user_id):
@@ -126,8 +127,13 @@ def create_new_post(user_id):
 
     title = request.form.get('title')
     content = request.form.get('content')
-
+    all_tags = Tag.query.all()
     post = Post(title=title, content=content, user_id=user_id)
+
+    # Checking to see if the name of the tag exists in the form submit
+    for tag in all_tags:
+        if (request.form.get(tag.name)):
+            post.tags.append(tag)
 
     db.session.add(post)
     db.session.commit()
@@ -144,13 +150,15 @@ def show_post(post_id):
     user = post.user
     full_name = user.full_name
     user_id = user.id
+    tags = post.tags
 
     return render_template("post_detail.html",
                             title=title,
                             content=content,
                             full_name=full_name,
                             user_id=user_id,
-                            post_id=post_id)
+                            post_id=post_id,
+                            tags=tags)
 
 @app.route('/posts/<post_id>/edit')
 def show_edit_post_form(post_id):
@@ -159,11 +167,15 @@ def show_edit_post_form(post_id):
     post = Post.query.get(post_id)
     title = post.title
     content = post.content
+    tags_checked = post.tags
+    tags_all = Tag.query.all()
 
     return render_template('edit_post_form.html',
                             title=title,
                             content=content,
-                            post_id=post_id)
+                            post_id=post_id,
+                            tags=tags_all,
+                            tags_checked=tags_checked)
 
 @app.route('/posts/<post_id>/edit', methods=["POST"])
 def edit_post(post_id):
@@ -172,8 +184,13 @@ def edit_post(post_id):
     post = Post.query.get(post_id)
     post.title = request.form.get('title')
     post.content = request.form.get('content')
+    all_tags = Tag.query.all()
+    post.tags = []
 
-    # db.session.add(post)
+    for tag in all_tags:
+        if (request.form.get(tag.name)):
+            post.tags.append(tag)
+
     db.session.commit()
 
     return redirect(f'/posts/{post_id}')

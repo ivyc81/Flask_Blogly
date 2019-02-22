@@ -14,6 +14,16 @@
         <label for="content">Content</label>
         <input type="text" name="content" id="content" value="{{content}}" required><br>
    
+        {% for tag in tags %}
+            {% if tag in tags_checked %}
+                <input type="checkbox" name={{tag.name}} checked>
+                <label for="{{tag.name}}">{{tag.name}}</label>
+            {% else %}
+                <input type="checkbox" name={{tag.name}}>
+                <label for="{{tag.name}}">{{tag.name}}</label>
+            {% endif %}
+        {% endfor %}
+
         <button class="btn btn-primary" type="submit">Edit</button>
     </form>
     <form action="/posts/{{post_id}}">

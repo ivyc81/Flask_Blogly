@@ -21,6 +21,10 @@
         By <a href="/users/{{user_id}}">{{full_name}}</a>
     </div>
 
+    {% for tag in tags %}
+        <span class="badge badge-primary">{{tag.name}}</span>
+    {% endfor %}
+
     <form action="/users/{{user_id}}">
         <button class="btn btn-secondary">Cancel</button>
     </form>
