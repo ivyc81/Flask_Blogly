@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}
+<div class='m-2'>
+    <h1>Edit a tag</h1>
+</div>
+{% endblock%}
+
+{% block content %}
+<div class="m-2">
+    <form action="/tags/{{tag_id}}/edit" method="POST">
+        <label for="name"></label>
+        <input type="text" name="name" id="name" value="{{tag_name}}" required><br>
+   
+        <button class="btn btn-primary" type="submit">Edit</button>
+    </form>
+    <form action="/tags">
+        <button class="btn btn-secondary">Cancel</button>
+    </form>
+</div>
+{% endblock %}

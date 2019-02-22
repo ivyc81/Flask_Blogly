@@ -8,20 +8,20 @@
     {% endfor %}
 {% endwith %}
 <div class='m-2'>
-    <h1>Users</h1>
+    <h1>Tags</h1>
 </div>
 {% endblock%}
 
 {% block content %}
 <div class="m-2">
     <ul>
-        {% for user in users %}
-            <li><a href="/users/{{user.id}}">{{user.full_name}}</a></li>
+        {% for tag in tags %}
+            <li><a href="/tags/{{tag.id}}">{{tag.name}}</a></li>
         {% endfor %}
     </ul>
     
-    <form action="/users/new">
-        <button class="btn btn-primary">Add user</button>
+    <form action="/tags/new">
+        <button class="btn btn-primary">Add Tag</button>
     </form>
 </div>
 {% endblock %}
