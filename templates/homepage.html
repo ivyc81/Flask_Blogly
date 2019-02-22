@@ -8,12 +8,19 @@
 
 {% block content %}
 <div class="m-2">
-    <div>    
-        {% for post in posts %}
-        <h2><a href="/posts/{{post.id}}">{{post.title}}</a></h2>
-        <div>{{post.content}}</div>
-        <small>by <a href="/users/{{post.user.id}}">{{post.user.full_name}}</a> on {{post.created_at.strftime('%a %b %d, %Y %I:%m %p')}}</small>
-        {% endfor %}
+    <div>
+        <ul>    
+            {% for post in posts %}
+            <li class='my-4'>
+                <h2><a href="/posts/{{post.id}}">{{post.title}}</a></h2>
+                <div>{{post.content}}</div>
+                <small>by <a href="/users/{{post.user.id}}">{{post.user.full_name}}</a> on {{post.created_at.strftime('%a %b %d, %Y %I:%m %p')}}</small><br>
+                <span>Tags</span>
+                    {% for tag in post.tags %}
+                        <a href="/tags/{{tag.id}}" class="badge badge-primary">{{tag.name}}</a>
+                    {% endfor %}
+                {% endfor %}
+            </li>
         </ul>
     </div>
 </div>

@@ -15,7 +15,7 @@
         <input type="text" name="content" id="content" required><br>
 
         {% for tag in tags %}
-        <input type="checkbox" name={{tag.name}}>
+        <input type="checkbox" name="{{tag.name}}">
         <label for="{{tag.name}}">{{tag.name}}</label>
         {% endfor %}
    

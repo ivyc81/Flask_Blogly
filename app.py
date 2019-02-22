@@ -1,6 +1,6 @@
 """Blogly application."""
 
-from flask import Flask, request, render_template, redirect
+from flask import Flask, request, render_template, redirect, flash
 from models import db, connect_db, User, Post, PostTag, Tag
 from flask_debugtoolbar import DebugToolbarExtension
 
@@ -18,7 +18,7 @@ connect_db(app)
 def show_five_posts():
     """show a list 5 posts on screen"""
 
-    posts = Post.query.order_by(Post.created_at.desc())
+    posts = Post.query.order_by(Post.created_at.desc()).limit(5)
 
     return render_template('homepage.html', posts=posts)
 
@@ -49,6 +49,7 @@ def create_new_users():
     db.session.add(user)
     db.session.commit()
 
+    flash("New user has been sucessfully created!")
     return redirect('/users')
 
 @app.route('/users/<user_id>')
@@ -95,6 +96,7 @@ def edit_user_profile(user_id):
     db.session.add(user)
     db.session.commit()
 
+    flash("User has been sucessfully edited!")
     return redirect('/users')
 
 @app.route('/users/<user_id>/delete', methods=["POST"])
@@ -105,6 +107,7 @@ def delete_user_profile(user_id):
     db.session.delete(user)
     db.session.commit()
 
+    flash("User has been sucessfully deleted!")
     return redirect('/users')
 
 @app.route('/users/<user_id>/posts/new')
@@ -132,12 +135,13 @@ def create_new_post(user_id):
 
     # Checking to see if the name of the tag exists in the form submit
     for tag in all_tags:
-        if (request.form.get(tag.name)):
+        if tag.name in request.form:
             post.tags.append(tag)
 
     db.session.add(post)
     db.session.commit()
 
+    flash("New post has been sucessfully created!")
     return redirect(f"/users/{user_id}")
 
 @app.route('/posts/<post_id>')
@@ -158,7 +162,8 @@ def show_post(post_id):
                             full_name=full_name,
                             user_id=user_id,
                             post_id=post_id,
-                            tags=tags)
+                            tags=tags,
+                            post=post)
 
 @app.route('/posts/<post_id>/edit')
 def show_edit_post_form(post_id):
@@ -188,11 +193,12 @@ def edit_post(post_id):
     post.tags = []
 
     for tag in all_tags:
-        if (request.form.get(tag.name)):
+        if tag.name in request.form:
             post.tags.append(tag)
 
     db.session.commit()
 
+    flash("Post has been sucessfully edited!")
     return redirect(f'/posts/{post_id}')
 
 
@@ -206,6 +212,7 @@ def delete_post(post_id):
     db.session.delete(post)
     db.session.commit()
 
+    flash("Post has been sucessfully deleted!")
     return redirect(f'/users/{user_id}')
 
 @app.route('/posts')
@@ -240,6 +247,7 @@ def create_tag():
     db.session.add(tag)
     db.session.commit()
 
+    flash("New tag has been sucessfully created!")
     return redirect('/tags')
 
 @app.route('/tags/<tag_id>')
@@ -273,6 +281,7 @@ def edit_tag(tag_id):
 
     db.session.commit()
 
+    flash("Tag has been sucessfully edited!")
     return redirect('/tags')
 
 @app.route('/tags/<tag_id>/delete', methods=["POST"])
@@ -283,5 +292,6 @@ def delete_tag(tag_id):
     db.session.delete(tag)
     db.session.commit()
 
+    flash('Tag has been sucessfully deleted!')
     return redirect('/tags')
 

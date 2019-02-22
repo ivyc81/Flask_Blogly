@@ -1,11 +1,14 @@
 {% extends "base.html" %}
 
+{% block flash %}
+    {% with messages = get_flashed_messages() %}
+        {% for message in messages %}
+        <div class="alert alert-success" role="alert">{{message}}</div>
+        {% endfor %}
+    {% endwith %}
+{% endblock %}
+
 {% block title %}
-{% with messages = get_flashed_messages() %}
-    {% for message in messages %}
-    <div class="alert alert-success" role="alert">{{message}}</div>
-    {% endfor %}
-{% endwith %}
 <a href="/users"><-- See all users</a>
 <div class="m-2">
     <h1>{{full_name}}</h1>

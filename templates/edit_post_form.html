@@ -16,10 +16,10 @@
    
         {% for tag in tags %}
             {% if tag in tags_checked %}
-                <input type="checkbox" name={{tag.name}} checked>
+                <input type="checkbox" name="{{tag.name}}" checked>
                 <label for="{{tag.name}}">{{tag.name}}</label>
             {% else %}
-                <input type="checkbox" name={{tag.name}}>
+                <input type="checkbox" name="{{tag.name}}">
                 <label for="{{tag.name}}">{{tag.name}}</label>
             {% endif %}
         {% endfor %}
